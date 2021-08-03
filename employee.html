@@ -81,18 +81,20 @@
     async function show() {
         try {           
             let user = await getUserDataWithPromise();
+            let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Level Differene</th></tr></thead><tbody>';
             user = JSON.parse(user)
             const listing = document.getElementById("msg");
-            listing.innerHTML ='<ol>';
 
             if (user.length == 0){
-                listing.innerHTML += "<li>No Matches</li>";
+                content += '<tr><td colspan="2">No Matches</td></tr>';
             }
                 
             for (var i = 0; i < user.length; i++) {
-                listing.innerHTML += "<li>" + user[i].debug + "</li>";
+                content += "<tr><td>" + user[i].debug + "</td><td>" + user[i].level_diff + "</td></tr>";
             }
-            listing.innerHTML += "</ol>";
+            content += "</tbody></table>";
+
+            listing.innerHTML = content;
             
         } catch (err) {
             console.log(err)
