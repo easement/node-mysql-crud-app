@@ -12,16 +12,30 @@
 
   <div class="container">
     <div class="jumbotron">
-      <h1>employee</h1>
+      <h1>Employee</h1>
     </div>
 
-    <select id="sel" onchange="show(this)">
-        <option value="">-- Select --</option>
-    </select>
+    <form onsubmit="show();return false;" >
+        <select id="sel">
+            <option value="">-- Select --</option>
+        </select>
+
+        <div>
+            <input type="radio" id="get_help" name="help_radio" value="get_help"
+                   checked>
+            <label for="get_help">Get Help</label>
+          </div>
+          
+          <div>
+            <input type="radio" id="give_help" name="help_radio" value="give_help">
+            <label for="give_help">Give Help</label>
+          </div>
+
+          <input type="submit">
+    </form>
 
     <div id="msg"></div>
   </div>
-
 </body>
 
 
@@ -42,8 +56,11 @@
     })();
 
 
-    async function getUserDataWithPromise(id) {
-        var xhr = new XMLHttpRequest();
+    // Load the user and their help direction
+    async function getUserDataWithPromise() {
+        let xhr = new XMLHttpRequest();
+        ({id, help_direction} = getFormSettings());
+        
         return new Promise(function(resolve, reject) {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
@@ -54,34 +71,56 @@
                     }
                     }
                 }
-                xhr.open('get', 'http://localhost:5000/api/v1/help/' + id, true)
+                xhr.open('get', 'http://localhost:5000/api/v1/help/' + id + '/' + help_direction, true)
                 xhr.send();
         });
     }
     
-    async function logUserData(id) {
-        try {
-            let user = await getUserDataWithPromise(id);
+
+    // Lod help data for employee and generate the HTML.
+    async function show() {
+        try {           
+            let user = await getUserDataWithPromise();
             user = JSON.parse(user)
-            console.log(user)
-            const table = document.getElementById("msg");
-            console.log(table);
-            table.innerHTML ="<ol>";
-            for (var i = 0; i < user.length; i++) {
-                console.log(user[i].debug);
-                table.innerHTML += "<li>" + user[i].debug + "</li>";
+            const listing = document.getElementById("msg");
+            listing.innerHTML ='<ol>';
+
+            if (user.length == 0){
+                listing.innerHTML += "<li>No Matches</li>";
             }
-            table.innerHTML += "</ol>";
+                
+            for (var i = 0; i < user.length; i++) {
+                listing.innerHTML += "<li>" + user[i].debug + "</li>";
+            }
+            listing.innerHTML += "</ol>";
             
         } catch (err) {
             console.log(err)
         }
     }
 
-    function show(selectElement) {
-        logUserData(selectElement.value);
+    // Helper method to fetch the form.
+    function getFormSettings(){
+        let opts = {
+            id: 0, 
+            help_direction: 'get_help'
+        };
+
+        opts.id = document.getElementById("sel").value;
+
+        const radios = document.getElementsByName('help_radio');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                opts.help_direction = radios[i].value;
+                // only one radio can be logically checked, don't check the rest
+                break;
+            }
+        }
+
+        return opts;
     }
-    
+
+
 </script>
 
 </html>

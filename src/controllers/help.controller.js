@@ -13,23 +13,45 @@ exports.findAll = function(req, res) {
 };
 
 
-exports.findById = function(req, res) {
-    // Determine if someone needs help vs giving help
-    
-    // Can help folks
-    if (!('needs' in req.body)) {
-        Help.findCanHelpById(req.params.id, function(err, help) {
-            if (err)
-            res.send(err);
-            res.json(help);
-        });
-    } else { // Needs help from folks
-        Help.findNeedsHelpById(req.params.id, function(err, help) {
-            if (err)
-            res.send(err);
-            res.json(help);
-        });
-    }
+// todo - clean up routing. this one may not be needed.
+// exports.findById = function(req, res) { 
+//     // Can help folks
+//     if (!('get_help' in req.body)) {
+//         console.log("gives help");
+//         Help.findCanHelpById(req.params.id, function(err, help) {
+//             if (err)
+//             res.send(err);
+//             res.json(help);
+//         });
+//     } else { // Needs help from folks
+//         console.log("gets help");
+//         Help.findNeedsHelpById(req.params.id, function(err, help) {
+//             if (err)
+//             res.send(err);
+//             res.json(help);
+//         });
+//     }
 
 
+// };
+
+exports.findGetHelpById = function(req, res) {
+    console.log("gets help");
+    Help.findNeedsHelpById(req.params.id, function(err, help) {
+        if (err)
+        res.send(err);
+        res.json(help);
+    });
+}
+
+
+exports.findGiveHelpById = function(req, res) {
+    console.log("gives help");
+    Help.findCanHelpById(req.params.id, function(err, help) {
+        if (err)
+        res.send(err);
+        res.json(help);
+    });
 };
+
+
