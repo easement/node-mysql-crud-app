@@ -12,26 +12,34 @@
 
   <div class="container">
     <div class="jumbotron">
-      <h1>Employee</h1>
+      <h1>Opportunity Finder by Employee</h1>
     </div>
 
     <form onsubmit="show();return false;" >
-        <select id="sel">
-            <option value="">-- Select --</option>
-        </select>
 
-        <div>
-            <input type="radio" id="get_help" name="help_radio" value="get_help"
-                   checked>
-            <label for="get_help">Get Help</label>
-          </div>
-          
-          <div>
-            <input type="radio" id="give_help" name="help_radio" value="give_help">
-            <label for="give_help">Give Help</label>
-          </div>
-
-          <input type="submit">
+        <div class="row align-items-start">
+            <div class="col">
+                <select id="sel" class="form-select">
+                    <option selected>-- Who --</option>
+                </select>
+            </div>
+            <div class="col">
+               <div>
+                    <input type="radio" id="get_help" name="help_radio" value="get_help"
+                       checked>
+                     <label for="get_help">Get Help</label>
+                </div>
+              
+                <div>
+                    <input type="radio" id="give_help" name="help_radio" value="give_help">
+                    <label for="give_help">Give Help</label>
+                </div>
+            </div>
+            <div class="col">
+                <input type="submit">
+            </div>
+        </div>
+        
     </form>
 
     <div id="msg"></div>
@@ -83,7 +91,7 @@
             let user = await getUserDataWithPromise();
             let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Level Differene</th></tr></thead><tbody>';
             user = JSON.parse(user)
-            const listing = document.getElementById("msg");
+            let listing = document.getElementById("msg");
 
             if (user.length == 0){
                 content += '<tr><td colspan="2">No Matches</td></tr>';
