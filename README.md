@@ -1,5 +1,5 @@
 ## opportunity-finder
-Purpose: To find opportunites for folks in large organizations with a bias towards lower experieced/leveled folks helping out higher eveled folks. This helps create opportunites for new folks who may not have as much visibility in the org. 
+Purpose: To find opportunites for folks in large organizations with a bias towards lower experieced/leveled folks helping out higher eveled folks. This helps create opportunites for new folks who may not have as much visibility in the org.  The static pages consume a RESTful API.  Built as part of Maker Week so it's not super elegant, but gets the job done. 
 
 ### Author : Matt Billings 
 Heavily based on Raul Gupta's https://github.com/rahulguptafullstack/node-mysql-crud-app as a starting point
