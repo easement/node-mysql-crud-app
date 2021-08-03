@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sample Site</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    body { padding-top: 50px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1>employee</h1>
+    </div>
+
+    <select id="sel" onchange="show(this)">
+        <option value="">-- Select --</option>
+    </select>
+
+    <p id="msg"></p>
+  </div>
+
+</body>
+
+
+
+<script>
+    window.onload = populateSelect();
+
+    function populateSelect() {
+
+        // CREATE AN XMLHttpRequest OBJECT, WITH GET METHOD.
+        var xhr = new XMLHttpRequest(), 
+            method = 'GET',
+            overrideMimeType = 'application/json',
+            url = 'http://localhost:5000/api/v1/employees';        // make this a variable
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                
+                // PARSE JSON DATA.
+                var res = JSON.parse(xhr.responseText);
+
+                var ele = document.getElementById('sel');
+                for (var i = 0; i < res.length; i++) {
+                    // BIND DATA TO <select> ELEMENT.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + res[i].id + '">' + res[i].fname + ' ' + res[i].lname + '</option>';
+                }
+            }
+        };
+        xhr.open(method, url, true);
+        xhr.send();
+    }
+
+    function show(ele) {
+        // GET THE SELECTED VALUE FROM <select> ELEMENT AND SHOW IT.
+        var msg = document.getElementById('msg');
+        msg.innerHTML = 'Selected Name: <b>' + ele.options[ele.selectedIndex].text + '</b> </br>' +
+            'ID: <b>' + ele.value + '</b>';
+    }
+</script>
+
+</html>

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // create express app
 const app = express();
@@ -14,9 +15,19 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // define a root route
-app.get('/', (req, res) => {
-  res.send("Hello World");
+// app.get('/', (req, res) => {
+//   res.send("Hello World");
+// });
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/index.html'));
 });
+
+app.get('/employee', function(req, res) {
+  res.sendFile(path.join(__dirname, '/employee.html'));
+});
+
+
 
 // Require employee routes
 const employeeRoutes = require('./src/routes/employee.routes')
