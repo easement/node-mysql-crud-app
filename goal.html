@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goal</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Goals</h1>
+    </div>
+
+    <form onsubmit="show();return false;" >
+
+        <div class="row align-items-start">
+            <div class="col">
+                <select id="sel" class="form-select">
+                    <option selected>-- Goal --</option>
+                </select>
+            </div>
+            
+            <div class="col">
+                <input type="submit">
+            </div>
+        </div>
+        
+    </form>
+
+    <div id="msg"></div>
+  </div>
+</body>
+
+
+
+<script>
+
+    // Fetch initial list of employees
+    (async () => {
+        const resp = await fetch("http://localhost:5000/api/v1/goals");
+        const jsonData = await resp.json();
+
+        var ele = document.getElementById('sel');
+        for (var i = 0; i < jsonData.length; i++) {
+            // BIND DATA TO <select> ELEMENT.
+            ele.innerHTML = ele.innerHTML +
+                '<option value="' + jsonData[i].id + '">' + jsonData[i].name + '</option>';
+        }
+    })();
+
+
+    // Load the user and their help direction
+    async function getUserDataWithPromise() {
+        let xhr = new XMLHttpRequest();
+        ({id, help_direction} = getFormSettings());
+        
+        return new Promise(function(resolve, reject) {
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status >= 300) {
+                        reject("Error, status code = " + xhr.status)
+                    } else {
+                        resolve(xhr.responseText);
+                    }
+                    }
+                }
+                xhr.open('get', 'http://localhost:5000/api/v1/help/' + id + '/' + help_direction, true)
+                xhr.send();
+        });
+    }
+    
+
+    // Load help data for employee and generate the HTML.
+    async function show() {
+        try {           
+            let user = await getUserDataWithPromise();
+            let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Level Difference</th></tr></thead><tbody>';
+            user = JSON.parse(user)
+            let listing = document.getElementById("msg");
+
+            if (user.length == 0){
+                content += '<tr><td colspan="2">No Matches</td></tr>';
+            }
+                
+            for (var i = 0; i < user.length; i++) {
+                content += '<tr class="' + getMatchClass(user[i].level_diff) + '"><td>' + user[i].debug + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
+            }
+            content += "</tbody></table>";
+
+            listing.innerHTML = content;
+            
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    function getHelpingText(obj){
+        // Should / could come back int the DB?
+        const levelLookup = ['Outsider', 'Junior','Mid','Senior','Staff','Executive']
+        let user = [levelLookup[obj.has_emp_level], levelLookup[obj.wants_emp_level]];
+        
+        // What amkes this work is the way there are 2 views where things are flipped.
+        return user.join(" helping ");
+    }
+
+    function getMatchClass(difference){
+        difference = parseInt(difference);
+        if (difference < 0) {
+            matchClass = 'good_match';
+        } else if (difference == 0) {
+            matchClass = 'even_match';
+        } else {
+            matchClass = "";
+        }
+
+        return matchClass;
+    }
+
+
+    // Helper method to fetch the form.
+    function getFormSettings(){
+        let opts = {
+            id: 0, 
+            help_direction: 'get_help'
+        };
+
+        opts.id = document.getElementById("sel").value;
+
+        const radios = document.getElementsByName('help_radio');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                opts.help_direction = radios[i].value;
+                // only one radio can be logically checked, don't check the rest
+                break;
+            }
+        }
+
+        return opts;
+    }
+
+
+</script>
+
+</html>

@@ -27,6 +27,9 @@ app.get('/employee', function(req, res) {
   res.sendFile(path.join(__dirname, '/employee.html'));
 });
 
+app.get('/goal', function(req, res) {
+  res.sendFile(path.join(__dirname, '/goal.html'));
+});
 
 
 // Require employee routes
