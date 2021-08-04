@@ -27,7 +27,7 @@ Help.findById = function (id, result) {
 
 // Dupe of find by id
 Help.findCanHelpById = function (id, result) {
-    dbConn.query("Select * from view_all_matches where has_emp = ? ", id, function (err, res) {             
+    dbConn.query("Select * from help_give where has_emp = ? ", id, function (err, res) {             
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -40,7 +40,7 @@ Help.findCanHelpById = function (id, result) {
 };
 
 Help.findNeedsHelpById = function (id, result) {
-    dbConn.query("Select * from view_all_matches where wants_emp = ? ", id, function (err, res) {             
+    dbConn.query("Select * from help_get where wants_emp = ? ", id, function (err, res) {             
         if(err) {
             console.log("error: ", err);
             result(err, null);
