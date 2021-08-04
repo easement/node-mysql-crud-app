@@ -100,8 +100,6 @@
             }
                 
             for (var i = 0; i < user.length; i++) {
-                
-
                 content += '<tr class="' + getMatchClass(user[i].level_diff) + '"><td>' + user[i].debug + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
             }
             content += "</tbody></table>";
@@ -116,12 +114,10 @@
     function getHelpingText(obj){
         // Should / could come back int the DB?
         const levelLookup = ['Outsider', 'Junior','Mid','Senior','Staff','Executive']
-
         let user = [levelLookup[obj.has_emp_level], levelLookup[obj.wants_emp_level]];
-
+        
         // What amkes this work is the way there are 2 views where things are flipped.
         return user.join(" helping ");
-
     }
 
     function getMatchClass(difference){
