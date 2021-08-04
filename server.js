@@ -32,10 +32,12 @@ app.get('/employee', function(req, res) {
 // Require employee routes
 const employeeRoutes = require('./src/routes/employee.routes')
 const helpRoutes = require('./src/routes/help.routes')
+const goalRoutes = require('./src/routes/goal.routes')
 
 // using as middleware
 app.use('/api/v1/employees', employeeRoutes)
 app.use('/api/v1/help', helpRoutes)
+app.use('/api/v1/goals', goalRoutes)
 
 // listen for requests
 app.listen(port, () => {
