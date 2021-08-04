@@ -10,9 +10,8 @@ exports.findAll = function(req, res) {
   });
 };
 
-
 exports.findById = function(req, res) {
-    Goal.findNeedsHelpById(req.params.id, function(err, goal) {
+    Goal.findGoalHelperById(req.params.id, function(err, goal) {
         if (err)
         res.send(err);
         res.json(goal);

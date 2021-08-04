@@ -63,4 +63,18 @@ Goal.delete = function(id, result){
     }); 
 };
 
+// We can leverage the help_give view!
+Goal.findGoalHelperById = function (goal_id, result) {
+    dbConn.query("Select * from help_give where goal_id = ? group by has_emp order by has_emp_level asc", [goal_id], function (err, res) {             
+        if(err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else{
+            console.log("modelllll");
+            result(null, res);
+        }
+    });   
+};
+
 module.exports= Goal;

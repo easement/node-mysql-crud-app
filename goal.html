@@ -53,7 +53,7 @@
     // Load the user and their help direction
     async function getUserDataWithPromise() {
         let xhr = new XMLHttpRequest();
-        ({id, help_direction} = getFormSettings());
+        let id = document.getElementById("sel").value;
         
         return new Promise(function(resolve, reject) {
             xhr.onreadystatechange = function() {
@@ -65,7 +65,7 @@
                     }
                     }
                 }
-                xhr.open('get', 'http://localhost:5000/api/v1/help/' + id + '/' + help_direction, true)
+                xhr.open('get', 'http://localhost:5000/api/v1/goals/' + id , true)
                 xhr.send();
         });
     }
@@ -75,7 +75,7 @@
     async function show() {
         try {           
             let user = await getUserDataWithPromise();
-            let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Level Difference</th></tr></thead><tbody>';
+            let content =  '<table class="table"><thead><tr><th scope="col">Who Can Help</th><th>Helper Level</th></tr></thead><tbody>';
             user = JSON.parse(user)
             let listing = document.getElementById("msg");
 
@@ -84,7 +84,7 @@
             }
                 
             for (var i = 0; i < user.length; i++) {
-                content += '<tr class="' + getMatchClass(user[i].level_diff) + '"><td>' + user[i].debug + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
+                content += '<tr><td>' + user[i].has_name + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
             }
             content += "</tbody></table>";
 
@@ -97,48 +97,9 @@
 
     function getHelpingText(obj){
         // Should / could come back int the DB?
-        const levelLookup = ['Outsider', 'Junior','Mid','Senior','Staff','Executive']
-        let user = [levelLookup[obj.has_emp_level], levelLookup[obj.wants_emp_level]];
-        
-        // What amkes this work is the way there are 2 views where things are flipped.
-        return user.join(" helping ");
+        const levelLookup = ['Intern', 'Associate','Mid','Senior','Executive']
+        return levelLookup[obj.has_emp_level];
     }
-
-    function getMatchClass(difference){
-        difference = parseInt(difference);
-        if (difference < 0) {
-            matchClass = 'good_match';
-        } else if (difference == 0) {
-            matchClass = 'even_match';
-        } else {
-            matchClass = "";
-        }
-
-        return matchClass;
-    }
-
-
-    // Helper method to fetch the form.
-    function getFormSettings(){
-        let opts = {
-            id: 0, 
-            help_direction: 'get_help'
-        };
-
-        opts.id = document.getElementById("sel").value;
-
-        const radios = document.getElementsByName('help_radio');
-        for (var i = 0, length = radios.length; i < length; i++) {
-            if (radios[i].checked) {
-                opts.help_direction = radios[i].value;
-                // only one radio can be logically checked, don't check the rest
-                break;
-            }
-        }
-
-        return opts;
-    }
-
 
 </script>
 
