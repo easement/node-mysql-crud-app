@@ -8,6 +8,10 @@
     body { padding-top: 50px; }
     .good_match{background-color: rgb(97, 223, 97); }
     .even_match{background-color: rgba(168, 235, 168, 0.712); }
+    .hidden{display: none;}
+    #msg {margin-top:20px;}
+    #legend {margin-bottom: 20px;}
+    #legend .row {margin:0px;}
   </style>
 </head>
 <body>
@@ -15,6 +19,7 @@
   <div class="container">
     <div class="jumbotron">
       <h1>Opportunity Finder by Employee</h1>
+      <p>Select an employee and whether they wish to give or get help.</p>
     </div>
 
     <form onsubmit="show();return false;" >
@@ -43,6 +48,15 @@
         </div>
         
     </form>
+
+    <div id="legend" class="hidden">
+        <h3>Legend</h3>
+        <div class="row align-items-start">
+            <div class="good_match col">Helping above senoirotiy</div>
+            <div class="even_match col">Helping same seniority</div>
+            <div class="col">Helping lower seniority</div>
+        </div>
+    </div>
 
     <div id="msg"></div>
   </div>
@@ -91,20 +105,26 @@
     async function show() {
         try {           
             let user = await getUserDataWithPromise();
-            let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Level Difference</th></tr></thead><tbody>';
+            let content =  '<table class="table"><thead><tr><th scope="col">Assignment</th><th>Seniority Level Difference</th></tr></thead><tbody>';
             user = JSON.parse(user)
             let listing = document.getElementById("msg");
+            let legend = document.getElementById("legend");           
 
             if (user.length == 0){
                 content += '<tr><td colspan="2">No Matches</td></tr>';
+                legend.classList.add('hidden');
+            } else {     
+                for (var i = 0; i < user.length; i++) {
+                    content += '<tr class="' + getMatchClass(user[i].level_diff) + '"><td>' + user[i].debug + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
+                }
+                legend.classList.remove('hidden');
             }
-                
-            for (var i = 0; i < user.length; i++) {
-                content += '<tr class="' + getMatchClass(user[i].level_diff) + '"><td>' + user[i].debug + "</td><td>" + getHelpingText(user[i]) + "</td></tr>";
-            }
+
             content += "</tbody></table>";
 
             listing.innerHTML = content;
+
+            
             
         } catch (err) {
             console.log(err)
@@ -132,7 +152,6 @@
 
         return matchClass;
     }
-
 
     // Helper method to fetch the form.
     function getFormSettings(){

@@ -10,6 +10,7 @@
   <div class="container">
     <div class="jumbotron">
       <h1>Goals</h1>
+      <p>Select a goal and see you can talk to for help</p>
     </div>
 
     <form onsubmit="show();return false;" >
@@ -75,7 +76,7 @@
     async function show() {
         try {           
             let user = await getUserDataWithPromise();
-            let content =  '<table class="table"><thead><tr><th scope="col">Who Can Help</th><th>Helper Level</th></tr></thead><tbody>';
+            let content =  '<table class="table"><thead><tr><th scope="col">Who Can Help</th><th>Seniority Level</th></tr></thead><tbody>';
             user = JSON.parse(user)
             let listing = document.getElementById("msg");
 
