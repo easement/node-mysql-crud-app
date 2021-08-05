@@ -2,15 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Goal</title>
+  <title>Topic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    body { padding-top: 50px; }
+  </style>
 </head>
 <body>
 
   <div class="container">
+
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" href="./">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href=".#">Topic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./employee">Employee Matches</a>
+        </li>
+      </ul>
+
     <div class="jumbotron">
       <h1>Goals</h1>
-      <p>Select a goal and see you can talk to for help</p>
+      <p>Select a topic and see you can talk to for help</p>
     </div>
 
     <form onsubmit="show();return false;" >
@@ -18,7 +34,7 @@
         <div class="row align-items-start">
             <div class="col">
                 <select id="sel" class="form-select">
-                    <option selected>-- Goal --</option>
+                    <option selected>-- Topic --</option>
                 </select>
             </div>
             
