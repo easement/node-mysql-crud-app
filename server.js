@@ -31,11 +31,17 @@ app.get('/goal', function(req, res) {
   res.sendFile(path.join(__dirname, '/goal.html'));
 });
 
+app.get('/about', function(req, res) {
+  res.sendFile(path.join(__dirname, '/about.html'));
+});
+
+
 
 // Require employee routes
 const employeeRoutes = require('./src/routes/employee.routes')
 const helpRoutes = require('./src/routes/help.routes')
 const goalRoutes = require('./src/routes/goal.routes')
+
 
 // using as middleware
 app.use('/api/v1/employees', employeeRoutes)
