@@ -6,7 +6,6 @@ The static pages consume a RESTful API.  Built as part of Maker Week so it's not
 Two main pieces of functionality:
 * Topics/goals - A page to allow you to see all who knows about a given topic 
 * Employee - Given an employee, see who they can help or who can help them for all topics. 
-*  
 
 ### Authors: Matt Billings + Jenn Islam
 Heavily based on Raul Gupta's https://github.com/rahulguptafullstack/node-mysql-crud-app as a starting point
